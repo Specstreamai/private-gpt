@@ -18,7 +18,7 @@ def mock_settings_factory():
         enabled: bool = True,
         provider: str = "mock",
         processor: str = "best_links",
-        config_brave: bool = False,
+        config_providers: bool = False,
         **kwargs: Any,
     ) -> Settings:
         # Create a minimal Settings object with web_search configuration
@@ -27,11 +27,15 @@ def mock_settings_factory():
         settings.web_search.enabled = enabled
         settings.web_search.provider = provider
         settings.web_search.processor = processor
-        if config_brave:
+        if config_providers:
             settings.brave = MagicMock()
             settings.brave.api_key = "api-key"
             settings.brave.rate_limit = 1.0
             settings.brave.timeout = 30
+            settings.specstream = MagicMock()
+            settings.specstream.api_key = "api-key"
+            settings.specstream.speed = "default"
+            settings.specstream.timeout = 30
 
         # Add any additional kwargs to settings
         for key, value in kwargs.items():
@@ -169,14 +173,14 @@ class TestWebSearchServiceInitialization:
 
     @pytest.mark.parametrize(
         ("provider", "expected_class"),
-        [("brave", "BraveSearchProvider")],
+        [("brave", "BraveSearchProvider"), ("specstream", "SpecStreamSearchProvider")],
     )
     def test_each_provider_initializes_correctly(
         self, mock_settings_factory, provider, expected_class
     ):
         """Each provider type should initialize the correct class."""
         settings = mock_settings_factory(
-            enabled=True, provider=provider, config_brave=True
+            enabled=True, provider=provider, config_providers=True
         )
 
         settings.web_search.cached = False
@@ -192,14 +196,14 @@ class TestWebSearchServiceInitialization:
 
     @pytest.mark.parametrize(
         ("provider", "expected_class"),
-        [("brave", "CachedProvider")],
+        [("brave", "CachedProvider"), ("specstream", "CachedProvider")],
     )
     def test_each_provider_initializes_correctly_cached_true(
         self, mock_settings_factory, provider, expected_class
     ):
         """Each provider type should initialize the correct class."""
         settings = mock_settings_factory(
-            enabled=True, provider=provider, config_brave=True
+            enabled=True, provider=provider, config_providers=True
         )
 
         service = WebSearchService(

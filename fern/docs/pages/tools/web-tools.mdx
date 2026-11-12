@@ -87,7 +87,7 @@ brave:
 | `web_fetch.enabled` | Enables URL fetching and text extraction. |
 | `web_fetch.timeout_seconds` | Timeout for fetching a page. |
 | `web_search.enabled` | Enables web search. |
-| `web_search.provider` | Search provider. Current built-in options are `brave` and `mock`. |
+| `web_search.provider` | Search provider. Current built-in options are `brave`, `specstream` and `mock`. |
 | `web_search.processor` | Post-processing strategy for results. |
 | `web_search.num_links` | Maximum number of fetched search results. |
 | `web_search.mode_quality` | Preset that controls the fast vs accurate parameter block. |
@@ -95,3 +95,5 @@ brave:
 | `web_search.context_token` | Optional token budget used by the result processor. `0` disables the limit. |
 | `brave.api_key` | Brave Search API key. Required when using `provider: brave`. |
 | `brave.rate_limit` | Minimum seconds between Brave API requests. |
+| `specstream.api_key` | SpecStream API key. Required when using `provider: specstream`. |
+| `specstream.speed` | `default` or `fast`. `fast` returns the first engine results without the answer step. |
